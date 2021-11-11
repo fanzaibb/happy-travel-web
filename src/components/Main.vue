@@ -21,7 +21,7 @@ const cards = {
         <TopBg />
     </div>
     <section id="main-content">
-        <div class="container">
+        <div id="option-target" class="container relative-tag">
             <SearchBar />
             <CategoryNav />
             <CardWrapper :cards="cards" />
@@ -37,6 +37,10 @@ const cards = {
     margin-right: auto;
     margin-left: auto;
     padding: 0 123px;
+}
+
+.relative-tag {
+    position: relative;
 }
 
 #top-bg {
