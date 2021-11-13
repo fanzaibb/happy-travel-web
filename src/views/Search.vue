@@ -15,18 +15,20 @@
         </div>
         <div class="flex">
             <section class="check-block px-4 py-8 text-left">
-                <div v-for="obj in checkObj" :key="obj.title" class="pb-11">
+                <div v-for="obj in selectList" :key="obj.title" class="pb-11">
                     <div class="flex pb-2">
                         <img src="../assets/location.png" alt="" class="mr-3" />
                         <span class="text-black">{{ obj.title }}</span>
                     </div>
                     <div
-                        v-for="item in list"
-                        :key="item"
-                        class="flex pl-9 py-1 text-gray-250 font-medium text-sm"
+                        v-for="item in obj.selection"
+                        :key="item.id"
+                        class="flex pl-9 py-1 text-gray-250 font-medium text-sm cursor-pointer"
+                        :class="{ 'text-pink-100': item.checked }"
+                        @click="addChecked(item)"
                     >
-                        <div class="check-box mr-2"></div>
-                        {{ item }}
+                        <div class="check-box mr-2" :class="{ 'bg-pink-100': item.checked }"></div>
+                        {{ item.text }}
                     </div>
                 </div>
 
@@ -57,19 +59,33 @@
 
 <script setup>
 import VCard from '../components/VerticalCard.vue';
+import { reactive } from 'vue';
 
 const list = ['全年無休', '週末開放', '平日開放'];
 
-const checkObj = [
+const selectList = reactive([
     {
         title: '開放時間',
-        selection: ['全年無休', '週末開放', '平日開放']
+        selection: [
+            { id: 1, text: '全年無休', checked: false },
+            { id: 2, text: '週末開放', checked: false },
+            { id: 3, text: '平日開放', checked: false }
+        ]
     },
     {
         title: '景點類別',
-        selection: ['全年無休', '週末開放', '平日開放']
+        selection: [
+            { id: 1, text: '親近自然', checked: false },
+            { id: 2, text: '文化之旅', checked: false },
+            { id: 3, text: '文化之旅', checked: false }
+        ]
     }
-];
+]);
+
+const addChecked = item => {
+    console.log('click');
+    item.checked = !item.checked;
+};
 </script>
 
 <style lang="scss">
@@ -98,5 +114,6 @@ const checkObj = [
     height: 17px;
     border: 1px solid #cccccc;
     border-radius: 2px;
+    transition: background-color 0.8s ease;
 }
 </style>
