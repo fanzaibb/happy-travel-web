@@ -112,7 +112,22 @@ const toNext = () => {
     }
 
     button {
-        transition: visibility 0.4s ease-in-out;
+        transition: visibility 0.5s ease-in-out;
+        &:hover {
+            animation: move-in 1s ease-out;
+        }
+    }
+    
+    @keyframes move-in {
+        0% {
+            opacity: 0.5;
+            transform: translateY(3px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0px);
+        }
     }
 }
 </style>
