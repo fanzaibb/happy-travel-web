@@ -1,7 +1,23 @@
+<script setup>
+import { defineProps } from 'vue';
+import CardTag from './CardTag.vue';
+
+defineProps({
+    cols: {
+        type: Number,
+        default: 4
+    }
+});
+</script>
+
 <template>
-    <div v-for="i in 4" :key="i" class="activity-card bg-white rounded-3xl border border-gray-100">
-        <div class="card-img-wrapper">
-            <img src="../assets/spot.png" alt="activities" />
+    <div
+        v-for="i in cols"
+        :key="i"
+        class="activity-card bg-white rounded-3xl border border-gray-100"
+    >
+        <div class="card-img-wrapper flex items-end p-4">
+            <CardTag />
         </div>
         <div class="p-4 text-left">
             <h4 class="font-medium text-gray-800 pb-4">大溪橋（大溪情人橋）</h4>
@@ -20,6 +36,10 @@
 </template>
 
 <style lang="scss" scoped>
+.card-img-wrapper {
+    height: 222px;
+    background-image: url('../assets/spot.png');
+}
 .activity-card {
     width: 285px;
     height: 403px;

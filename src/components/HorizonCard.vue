@@ -1,10 +1,25 @@
+<script setup>
+import { defineProps } from 'vue';
+import CardTag from './CardTag.vue';
+
+defineProps({
+    cols: {
+        type: Number,
+        default: 2
+    }
+});
+</script>
+
 <template>
     <div
-        v-for="i in 2"
+        v-for="i in cols"
         :key="i"
         class="activity-card bg-white flex rounded-3xl border border-gray-100"
     >
-        <img src="../assets/activies.png" alt="activities" width="321" height="241" />
+        <div class="card-img-wrapper flex items-end p-4">
+            <CardTag />
+        </div>
+        <!-- <img src="../assets/activies.png" alt="activities" width="321" height="241" /> -->
         <div class="py-8 px-4 text-left">
             <h4 class="font-medium text-gray-800 pb-4">大溪橋（大溪情人橋）</h4>
             <p class="pb-4 text-gray-200 font-sm font-normal">
@@ -27,5 +42,10 @@
 .activity-card {
     width: 590px;
     height: 241px;
+
+    .card-img-wrapper {
+        width: 321px;
+        background-image: url('../assets/activies.png');
+    }
 }
 </style>
