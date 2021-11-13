@@ -12,6 +12,7 @@ module.exports = {
             gray: {
                 100: '#e0e0e0',
                 200: '#4f4f4f',
+                250: '#666666',
                 300: '#828282',
                 400: '#bdbdbd',
                 500: '#eeeeee',
@@ -21,6 +22,9 @@ module.exports = {
             pink: {
                 100: '#F94144',
                 200: '#FFE9EB'
+            },
+            yellow: {
+                500: '#fff9ec'
             }
         },
         extend: {}
@@ -28,5 +32,9 @@ module.exports = {
     variants: {
         extend: {}
     },
-    plugins: []
+    plugins: [],
+
+    corePlugins: {
+        container: false
+    }
 };

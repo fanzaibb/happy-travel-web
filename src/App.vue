@@ -1,14 +1,24 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import Main from './components/Main.vue';
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
 </script>
 
 <template>
-    <Main />
+    <Header />
+    <router-view></router-view>
+    <Footer />
 </template>
 
-<style>
+<style lang="scss">
+body {
+    height: 100%;
+    background-image: url('@/assets/full-bg.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -16,5 +26,27 @@ import Main from './components/Main.vue';
     text-align: center;
     color: #2c3e50;
     padding-top: 120px;
+}
+
+.container {
+    width: 100%;
+    width: 1440px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 120px;
+}
+
+.relative-tag {
+    position: relative;
+}
+
+#top-bg {
+    section {
+        top: 42%;
+    }
+}
+
+.divider {
+    height: 2px;
 }
 </style>
