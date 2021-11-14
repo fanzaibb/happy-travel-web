@@ -34,6 +34,8 @@ const props = defineProps({
         default: ''
     }
 });
+const emit = defineEmits(['input', 'enable-submit']);
+const inputVal = ref('');
 const setSize = `width: ${props.width}; left: ${props.left}`;
 const toggle = ref(false);
 const switchToggle = () => {
@@ -42,7 +44,6 @@ const switchToggle = () => {
 watch(
     () => store.state.showDropdown,
     val => {
-        console.log(val);
         if (!val) toggle.value = false;
     }
 );
@@ -51,9 +52,11 @@ const onFocus = () => {
     switchToggle();
 };
 
-const addSeachParams = (label, subKey) => {
-    store.dispatch('UPDATE_NAV', { label, subKey, key: props.paramKey });
+const addSeachParams = (value, text) => {
+    store.dispatch('UPDATE_NAV', { text, value, type: props.paramKey });
 };
+
+const emitInput = () => emit('input', inputVal.value);
 </script>
 
 <template>
@@ -73,12 +76,14 @@ const addSeachParams = (label, subKey) => {
     </div>
     <input
         v-else
+        v-model.trim="inputVal"
         type="text"
         class="input-wrapper text-left pt-1 font-medium"
         placeholder="請輸入關鍵字"
         @focus="onFocus"
+        @input="emitInput"
     />
-    <teleport v-if="toggle" to="#option-target">
+    <teleport v-if="toggle && props.type !== 'input'" to="#option-target">
         <transition id="option">
             <div
                 v-if="toggle"

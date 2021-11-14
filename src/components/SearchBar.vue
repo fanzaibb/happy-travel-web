@@ -1,17 +1,35 @@
 <script setup>
 import InputWrapper from './InputWrapper.vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import cities from '@/utils/cities.json';
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 
 const store = useStore();
-const selectCity = computed(() => store.state.navList.city.key);
-const selectType = computed(() => store.state.navList.type.key);
+const router = useRouter();
+const selectCity = computed(() => store.state.navList[0].text);
+const selectType = computed(() => store.state.navList[1].text);
+const noCondition = computed(
+    () =>
+        input.value === '' &&
+        store.state.navList[0].text === '' &&
+        store.state.navList[1].text === ''
+);
 const tourTypes = {
     美食饗宴: 'restaurant',
     在地住宿: 'hotel',
     活動訊息: 'activity',
     特色景點: 'spot'
+};
+
+const input = ref('');
+const setInput = value => (input.value = value);
+
+const search = () => {
+    if (input.value.length > 0) {
+        store.dispatch('UPDATE_NAV', { text: input.value, value: input.value, type: 'others' });
+    }
+    router.push('/search');
 };
 </script>
 
@@ -30,7 +48,7 @@ const tourTypes = {
                 :selected="selectCity"
             >
                 <template #title>你想去哪裡</template>
-                {{ selectCity.length !== 0 ? selectCity : '台北市、高雄市' }}
+                {{ selectCity.length !== 0 ? selectCity : '臺北市、高雄市' }}
             </InputWrapper>
             <InputWrapper
                 width="174px"
@@ -42,7 +60,7 @@ const tourTypes = {
                 <template #title>你想去做什麼</template>
                 {{ selectType.length !== 0 ? selectType : '戶外活動、當地景點' }}
             </InputWrapper>
-            <InputWrapper type="input" width="327px" left="765px">
+            <InputWrapper type="input" width="327px" left="765px" @input="setInput">
                 <template #option>
                     <div class="text-left text-gray-800">
                         <p>熱門關鍵字</p>
@@ -63,6 +81,7 @@ const tourTypes = {
             </InputWrapper>
         </section>
         <button
+            :disabled="noCondition"
             class="
                 rounded-full
                 bg-pink-100
@@ -73,6 +92,8 @@ const tourTypes = {
                 font-medium
                 my-4
             "
+            :class="{ 'opacity-50': noCondition }"
+            @click="search"
         >
             <img src="../assets/search.png" alt="search" class="mr-1" />
             搜尋
