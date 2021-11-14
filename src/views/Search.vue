@@ -5,7 +5,7 @@ import { useStore } from 'vuex';
 import { reactive, computed } from 'vue';
 
 const store = useStore();
-const searchType = computed(() => store.state.navList.type);
+const searchType = computed(() => store.state.navList.find(e => e.text !== '')?.text);
 const data = computed(() => store.state['spot']);
 const list = ['全年無休', '週末開放', '平日開放'];
 const selectList = reactive([
@@ -45,7 +45,8 @@ const addChecked = item => {
     <NavTab />
     <div id="option-target" class="container relative-tag">
         <div class="result-bar text-pink-100 text-3xl text-left">
-            150個結果 <span class="text-black">{{ searchType.label }}</span>
+            <!-- 150個結果  -->
+            <span class="text-black">{{ searchType }}</span>
         </div>
         <div class="flex">
             <section class="check-block px-4 py-8 text-left">
