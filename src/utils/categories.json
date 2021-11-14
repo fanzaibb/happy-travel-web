@@ -1,0 +1,26 @@
+{
+    "restaurant": [
+        { "text": "中式美食", "url": "src/assets/building.png", "value": "restaurant" },
+        { "text": "異國料理", "url": "src/assets/building.png", "value": "restaurant" },
+        { "text": "甜點冰品", "url": "src/assets/building.png", "value": "restaurant" }
+    ],
+    "hotel": [
+        { "text": "一般住宿", "url": "src/assets/building.png", "value": "hotel" },
+        { "text": "觀光旅館", "url": "src/assets/building.png", "value": "hotel" },
+        { "text": "休閒農業", "url": "src/assets/building.png", "value": "hotel" }
+    ],
+    "activity": [
+        { "text": "節慶活動", "url": "src/assets/building.png", "value": "activity" },
+        { "text": "自行車活動", "url": "src/assets/building.png", "value": "activity" },
+        { "text": "產業文化活動", "url": "src/assets/building.png", "value": "activity" }
+    ],
+    "spot": [
+        { "text": "自然風景", "url": "src/assets/building.png", "value": "spot" },
+        { "text": "遊憩類", "url": "src/assets/building.png", "value": "spot" },
+        { "text": "觀光工廠", "url": "src/assets/building.png", "value": "spot" },
+        { "text": "休閒農業", "url": "src/assets/building.png", "value": "spot" },
+        { "text": "生態類", "url": "src/assets/building.png", "value": "spot" },
+        { "text": "古蹟類", "url": "src/assets/building.png", "value": "spot" },
+        { "text": "其他", "url": "src/assets/building.png", "value": "spot" }
+    ]
+}
