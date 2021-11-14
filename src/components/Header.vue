@@ -14,11 +14,13 @@ const infoType = [
 
 const searchType = type => {
     store.dispatch('SET_MAIN_TYPE', type);
+    router.push(`/${type}`);
 };
 
 const backToMain = () => {
     store.dispatch('UPDATE_NAV');
     store.dispatch('SET_MAIN_TYPE', '');
+    router.push('/');
 };
 </script>
 
