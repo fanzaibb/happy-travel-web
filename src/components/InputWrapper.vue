@@ -1,5 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { ref, watch } from 'vue';
+
+const store = useStore();
 
 const props = defineProps({
     type: {
@@ -15,20 +18,41 @@ const props = defineProps({
         default: ''
     },
     selection: {
-        type: Array,
+        type: Object,
         default: () => {}
     },
     setClass: {
+        type: String,
+        default: ''
+    },
+    paramKey: {
+        type: String,
+        default: ''
+    },
+    selected: {
         type: String,
         default: ''
     }
 });
 const setSize = `width: ${props.width}; left: ${props.left}`;
 const toggle = ref(false);
-const switchToggle = () => (toggle.value = !toggle.value);
+const switchToggle = () => {
+    toggle.value = !toggle.value;
+};
+watch(
+    () => store.state.showDropdown,
+    val => {
+        console.log(val);
+        if (!val) toggle.value = false;
+    }
+);
 const onFocus = () => {
     console.log('show option');
     switchToggle();
+};
+
+const addSeachParams = (label, subKey) => {
+    store.dispatch('UPDATE_NAV', { label, subKey, key: props.paramKey });
 };
 </script>
 
@@ -64,11 +88,13 @@ const onFocus = () => {
             >
                 <slot name="option">
                     <div
-                        v-for="item in props.selection"
-                        :key="item"
+                        v-for="(value, key) in props.selection"
+                        :key="key"
                         class="cursor-pointer hover:bg-pink-200 rounded text-gray-800 pt-1"
+                        :class="{ 'bg-pink-200': props.selected === key }"
+                        @click="addSeachParams(value, key)"
                     >
-                        {{ item }}
+                        {{ key }}
                     </div>
                 </slot>
             </div>

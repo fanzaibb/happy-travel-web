@@ -1,6 +1,14 @@
 <script setup>
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const el = document.getElementById('app');
+el.addEventListener('click', () => store.dispatch('SHOW_DROPDOWN'));
+
+store.dispatch('GET_SPOT');
 </script>
 
 <template>
@@ -26,6 +34,7 @@ body {
     text-align: center;
     color: #2c3e50;
     padding-top: 120px;
+    overflow-x: hidden;
 }
 
 .container {

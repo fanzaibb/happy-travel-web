@@ -1,9 +1,18 @@
 <script setup>
 import InputWrapper from './InputWrapper.vue';
+import { useStore } from 'vuex';
+import cities from '@/utils/cities.json';
+import { computed } from 'vue';
 
-const cities = ['高雄市', '台北市', '新竹市', '台東縣', '花蓮縣'];
-
-const tourTypes = ['美食饗宴', '在地住宿', '活動訊息', '特色景點'];
+const store = useStore();
+const selectCity = computed(() => store.state.navList.city.key);
+const selectType = computed(() => store.state.navList.type.key);
+const tourTypes = {
+    美食饗宴: 'restaurant',
+    在地住宿: 'hotel',
+    活動訊息: 'activity',
+    特色景點: 'spot'
+};
 </script>
 
 <template>
@@ -15,17 +24,25 @@ const tourTypes = ['美食饗宴', '在地住宿', '活動訊息', '特色景點
             <InputWrapper
                 set-class="grid grid-cols-3 gap-2"
                 width="327px"
-                left="141px"
+                left="218px"
                 :selection="cities"
+                param-key="city"
+                :selected="selectCity"
             >
                 <template #title>你想去哪裡</template>
-                台北市、高雄市
+                {{ selectCity.length !== 0 ? selectCity : '台北市、高雄市' }}
             </InputWrapper>
-            <InputWrapper width="174px" left="424px" :selection="tourTypes">
+            <InputWrapper
+                width="174px"
+                left="502px"
+                :selection="tourTypes"
+                param-key="type"
+                :selected="selectType"
+            >
                 <template #title>你想去做什麼</template>
-                戶外活動、當地景點
+                {{ selectType.length !== 0 ? selectType : '戶外活動、當地景點' }}
             </InputWrapper>
-            <InputWrapper type="input" width="327px" left="685px">
+            <InputWrapper type="input" width="327px" left="765px">
                 <template #option>
                     <div class="text-left text-gray-800">
                         <p>熱門關鍵字</p>
