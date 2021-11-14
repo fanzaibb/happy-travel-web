@@ -1,6 +1,5 @@
 import { createStore } from 'vuex';
-// import request from '@/utils/request.js';
-import { dataInCity } from './mock.json';
+import request from '@/utils/request.js';
 
 export default createStore({
     state: {
@@ -12,9 +11,12 @@ export default createStore({
         navList: [
             { type: 'city', value: '', text: '' },
             { type: 'type', value: '', text: '' },
-            { type: 'others', value: '', text: '' }
+            { type: 'others', value: '', text: '' },
+            { type: 'detail', value: '', text: '' }
         ],
-        showDropdown: false
+        searchData: [],
+        showDropdown: false,
+        detail: []
     },
     mutations: {
         SET_MAIN_TYPE(state, payload) {
@@ -37,17 +39,20 @@ export default createStore({
         },
         SHOW_DROPDOWN(state) {
             state.showDropdown = !state.showDropdown;
+        },
+        SET_SEARCH_DATA(state, payload) {
+            state.searchData = payload;
+        },
+        SET_DETAIL(state, payload) {
+            state.detail = payload;
         }
-    },
-    SET_SPOT(state, payload) {
-        state.spots = payload;
     },
     actions: {
         SET_MAIN_TYPE({ commit }, type) {
             commit('SET_MAIN_TYPE', type);
         },
-        GET_SPOT({ commit }) {
-            const res = dataInCity;
+        async GET_SPOT({ state, commit }, payload) {
+            // const res = dataInCity;
             // const filter = {
             //     Name: '',
             //     City: '',
@@ -55,11 +60,43 @@ export default createStore({
             //     Class2: '',
             //     Class3: ''
             // };
-            // res = await request({
-            // url: `/ScenicSpot/${filter.City}?$filter=contains(Class1,'${keywordTxt}')&$top=${limitNum}&$format=JSON`,
-            // method: 'get',
-            // });
+            const res = await request({
+                url: `/ScenicSpot/${state.navList[0].value}?$top=${
+                    payload?.page || 4
+                }&$format=JSON`,
+                method: 'get'
+            });
             commit('SET_SPOT', res);
+        },
+        async GET_RESTAURANT({ state, commit }, payload) {
+            const res = await request({
+                url: `/Restaurant/${state.navList[0].value}?$top=${
+                    payload?.page || 4
+                }&$format=JSON`,
+                method: 'get'
+            });
+            commit('SET_RESTAURANT', res);
+        },
+        async GET_HOTEL({ state, commit }, payload) {
+            const res = await request({
+                url: `/Hotel/${state.navList[0].value}?$top=${payload?.page || 4}&$format=JSON`,
+                method: 'get'
+            });
+            commit('SET_HOTEL', res);
+        },
+        async GET_ACTIVITY({ state, commit }, payload) {
+            const res = await request({
+                url: `/Activity/${state.navList[0].value}?$top=${payload?.page || 2}&$format=JSON`,
+                method: 'get'
+            });
+            commit('SET_ACTIVITY', res);
+        },
+        async GET_SEARCH_DATA({ commit }, url) {
+            const res = await request({
+                url: url,
+                method: 'get'
+            });
+            commit('SET_SEARCH_DATA', res);
         },
         UPDATE_NAV({ state, commit }, payload) {
             let list = [...state.navList];
@@ -67,7 +104,8 @@ export default createStore({
                 list = [
                     { type: 'city', value: '', text: '' },
                     { type: 'type', value: '', text: '' },
-                    { type: 'others', value: '', text: '' }
+                    { type: 'others', value: '', text: '' },
+                    { type: 'detail', value: '', text: '' }
                 ];
             } else {
                 list.forEach((e, index) => {
@@ -83,11 +121,13 @@ export default createStore({
                     }
                 });
             }
-            console.log(list);
             commit('SET_NAV', list);
         },
         SHOW_DROPDOWN({ commit }) {
             commit('SHOW_DROPDOWN');
+        },
+        SET_DETAIL({ commit }, payload) {
+            commit('SET_DETAIL', payload);
         }
     },
     getters: {}
