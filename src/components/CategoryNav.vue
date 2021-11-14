@@ -1,3 +1,74 @@
+<script setup>
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { ref, reactive, computed, watch } from 'vue';
+import categoryList from '../utils/categories.json';
+
+const store = useStore();
+const router = useRouter();
+const infoType = [
+    { text: '美食饗宴', url: 'src/assets/restaurant.png', value: 'restaurant' },
+    { text: '在地住宿', url: 'src/assets/building.png', value: 'hotel' },
+    { text: '活動訊息', url: 'src/assets/activity.png', value: 'activity' },
+    { text: '特色景點', url: 'src/assets/spot.png', value: 'spot' }
+];
+const list = computed(() => {
+    return store.state.mainType === '' ? infoType : categoryList[store.state.mainType];
+});
+
+watch(
+    () => store.state.mainType,
+    () => {
+        resetList();
+    }
+);
+
+const lastIndex = ref(5);
+const showList = ref([]);
+const resetList = () => {
+    showList.value = [];
+    list.value.forEach((e, index) => {
+        if (index < 6) showList.value.push(e);
+    });
+    console.log(showList.value);
+};
+resetList();
+
+const reachFirst = computed(() => showList.value[0].text === list.value[0].text);
+const reachLast = computed(
+    () => showList.value[showList.value.length - 1].text === list.value[list.value.length - 1].text
+);
+
+const toLast = () => {
+    if (reachFirst.value) return;
+    const findFirstIndex = list.value.findIndex(e => e.text === showList.value[0].text);
+    showList.value.unshift(list.value[findFirstIndex - 1]);
+    showList.value.pop();
+    lastIndex.value -= 1;
+};
+
+const toNext = () => {
+    if (reachLast.value) return;
+    lastIndex.value += 1;
+    showList.value.shift(0, 1);
+    showList.value.push(list.value[lastIndex.value]);
+};
+
+const searchType = type => {
+    if (store.state.mainType === '') {
+        store.dispatch('SET_MAIN_TYPE', type.value);
+    } else {
+        const obj = {
+            type: 'others',
+            clear: true,
+            ...type
+        };
+        store.dispatch('UPDATE_NAV', obj);
+        router.push('/search');
+    }
+};
+</script>
+
 <template>
     <div class="icon-nav flex justify-center items-center">
         <div v-if="list.length > 6" class="toggle-bar w-full absolute flex justify-between">
@@ -19,63 +90,18 @@
         <transition-group tag="section" class="flex justify-center items-center" name="slide">
             <div
                 v-for="item in showList"
-                :key="item.name"
-                class="icon-box bg-white flex justify-center items-center pointer-cursor"
+                :key="item.text"
+                class="icon-box bg-white flex justify-center items-center cursor-pointer"
+                @click="searchType(item)"
             >
-                <div class="h-1/2">
-                    <img :src="item.url" :alt="item.name" class="m-auto pb-5 w-auto h-auto" />
-                    <span class="text-gray-800 text-sm font-medium">{{ item.name }}</span>
+                <div class="h-1/2 cursor-pointer">
+                    <img :src="item.url" :alt="item.text" class="m-auto pb-5 w-auto h-auto" />
+                    <span class="text-gray-800 text-sm font-medium">{{ item.text }}</span>
                 </div>
             </div>
         </transition-group>
     </div>
 </template>
-
-<script setup>
-import { ref, reactive, computed } from 'vue';
-
-const infoType = [
-    { name: '美食饗宴', url: 'src/assets/building.png' },
-    { name: '在地住宿', url: 'src/assets/building.png' },
-    { name: '活動訊息', url: 'src/assets/history.png' },
-    { name: '特色景點', url: 'src/assets/special.png' }
-];
-const list = [
-    ...infoType
-    // { name: '自然風景' },
-    // { name: '遊憩類' },
-    // { name: '觀光工廠' },
-    // { name: '休閒農業' },
-    // { name: '生態類' },
-    // { name: '古蹟類' },
-    // { name: '其他' },
-    // { name: '其他1' }
-];
-
-const lastIndex = ref(5);
-const showList = reactive([]);
-list.forEach((e, index) => {
-    if (index < 6) showList.push(e);
-});
-
-const reachFirst = computed(() => showList[0].name === list[0].name);
-const reachLast = computed(() => showList[5].name === list[list.length - 1].name);
-
-const toLast = () => {
-    if (reachFirst.value) return;
-    const findFirstIndex = list.findIndex(e => e.name === showList[0].name);
-    showList.unshift(list[findFirstIndex - 1]);
-    showList.pop();
-    lastIndex.value -= 1;
-};
-
-const toNext = () => {
-    if (reachLast.value) return;
-    lastIndex.value += 1;
-    showList.shift(0, 1);
-    showList.push(list[lastIndex.value]);
-};
-</script>
 
 <style lang="scss" scoped>
 .icon-nav {
@@ -86,6 +112,9 @@ const toNext = () => {
         border: 1px solid #e0e0e0;
         border-radius: 20px;
         margin: 0 10px;
+        &:hover {
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+        }
     }
     .toggle-bar {
         width: 1262px;
