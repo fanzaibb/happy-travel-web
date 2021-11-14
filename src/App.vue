@@ -8,7 +8,6 @@ const store = useStore();
 const el = document.getElementById('app');
 el.addEventListener('click', () => store.dispatch('SHOW_DROPDOWN'));
 
-store.dispatch('GET_SPOT');
 </script>
 
 <template>

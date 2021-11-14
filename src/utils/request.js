@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jsSHA from 'jssha';
-console.log(jsSHA);
+
 const service = axios.create({
     baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Tourism'
 });
@@ -26,7 +26,7 @@ function GetAuthorizationHeader() {
 
 service.interceptors.request.use(
     config => {
-        console.log(config);
+        // console.log(config);
         config.headers.Authorization = GetAuthorizationHeader();
         return config;
     },
@@ -38,8 +38,8 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
     response => {
-        console.log(res);
         const res = response.data;
+        // console.log(res);
         return res;
     },
     error => {
