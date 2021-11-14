@@ -19,11 +19,11 @@
         <transition-group tag="section" class="flex justify-center items-center" name="slide">
             <div
                 v-for="item in showList"
-                :key="item"
+                :key="item.name"
                 class="icon-box bg-white flex justify-center items-center pointer-cursor"
             >
                 <div class="h-1/2">
-                    <img src="../assets/building.png" alt="hotel" class="m-auto pb-5" />
+                    <img :src="item.url" :alt="item.name" class="m-auto pb-5 w-auto h-auto" />
                     <span class="text-gray-800 text-sm font-medium">{{ item.name }}</span>
                 </div>
             </div>
@@ -34,15 +34,22 @@
 <script setup>
 import { ref, reactive, computed } from 'vue';
 
+const infoType = [
+    { name: '美食饗宴', url: 'src/assets/building.png' },
+    { name: '在地住宿', url: 'src/assets/building.png' },
+    { name: '活動訊息', url: 'src/assets/history.png' },
+    { name: '特色景點', url: 'src/assets/special.png' }
+];
 const list = [
-    { name: '自然風景' },
-    { name: '遊憩類' },
-    { name: '觀光工廠' },
-    { name: '休閒農業' },
-    { name: '生態類' },
-    { name: '古蹟類' },
-    { name: '其他' },
-    { name: '其他1' }
+    ...infoType
+    // { name: '自然風景' },
+    // { name: '遊憩類' },
+    // { name: '觀光工廠' },
+    // { name: '休閒農業' },
+    // { name: '生態類' },
+    // { name: '古蹟類' },
+    // { name: '其他' },
+    // { name: '其他1' }
 ];
 
 const lastIndex = ref(5);
@@ -117,7 +124,7 @@ const toNext = () => {
             animation: move-in 1s ease-out;
         }
     }
-    
+
     @keyframes move-in {
         0% {
             opacity: 0.5;
