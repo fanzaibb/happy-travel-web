@@ -1,30 +1,51 @@
 <script setup>
 import VCard from './VerticalCard.vue';
 import HCard from './HorizonCard.vue';
+import { useRouter } from 'vue-router';
 
-defineProps({
+const props = defineProps({
     cards: {
         type: Object,
         default: () => {}
+    },
+    data: {
+        type: Array,
+        default: () => []
     }
 });
+const router = useRouter();
+const searchCity = city => {
+    router.push('/search');
+    
+};
 </script>
 
 <template>
     <div class="wrapper">
-        <h2 class="text-2xl text-black pb-8 text-left font-medium">{{ cards.title }}</h2>
+        <h2 class="text-2xl text-black pb-8 text-left font-medium">{{ props.cards.title }}</h2>
         <div class="flex justify-between">
-            <template v-if="cards.type === 'c'">
+            <template v-if="props.cards.type === 'c'">
                 <div
-                    v-for="i in 6"
-                    :key="i"
-                    class="city-bg flex items-end justify-center p-4 text-lg font-medium"
+                    v-for="city in props.data"
+                    :key="city.id"
+                    class="
+                        city-bg
+                        flex
+                        items-end
+                        justify-center
+                        p-4
+                        text-lg
+                        font-medium
+                        cursor-pointer
+                    "
+                    :class="city.id"
+                    @click="searchCity(city.id)"
                 >
-                    <p class="text-white">台北</p>
+                    <p class="text-white">{{ city.name }}</p>
                 </div>
             </template>
-            <VCard v-if="cards.type === 'v'" />
-            <HCard v-if="cards.type === 'h'" />
+            <VCard v-if="props.cards.type === 'v'" :data="data" />
+            <HCard v-if="props.cards.type === 'h'" :data="data" />
         </div>
     </div>
 </template>
@@ -35,9 +56,26 @@ defineProps({
     .city-bg {
         height: 236px;
         width: 182px;
-        background-image: url('@/assets/taipei.png');
         background-repeat: no-repeat;
         background-size: cover;
+        &.Taipei {
+            background-image: url('@/assets/taipei.png');
+        }
+        &.Kaohsiung {
+            background-image: url('@/assets/Kaohsiung.png');
+        }
+        &.Taichung {
+            background-image: url('@/assets/Taichung.png');
+        }
+        &.Tainan {
+            background-image: url('@/assets/Tainan.png');
+        }
+        &.PingtungCounty {
+            background-image: url('@/assets/Pingtung.png');
+        }
+        &.TaitungCounty {
+            background-image: url('@/assets/Taitung.png');
+        }
     }
 }
 </style>

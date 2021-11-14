@@ -10,12 +10,16 @@ const router = createRouter({
         {
             path: '/search',
             component: () => import('@/views/Search.vue')
+        },
+        {
+            path: '/detail',
+            component: () => import('@/views/Detail.vue')
         }
     ]
 });
 
 router.beforeEach(async (to, from, next) => {
-    console.log(to);
+    // console.log(to);
     next();
 });
 
