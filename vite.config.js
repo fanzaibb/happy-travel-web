@@ -4,6 +4,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: '/happy-travel-web/',
     plugins: [vue()],
     resolve: {
         alias: {
