@@ -1,19 +1,53 @@
+<script setup>
+// import CardWrapper from '../components/CardWrapper.vue';
+import NavTab from '../components/NavTab.vue';
+import { useStore } from 'vuex';
+import { dataInCity } from '../mock.json';
+import { computed } from 'vue';
+
+const store = useStore();
+const data = computed(() => store.state.detail);
+const detail = computed(() => store.state.navList[3]);
+// console.log(data.value, detail.value);
+const photos = [
+    {
+        url: 'https://www.travel.taipei/image/182690',
+        show: false
+    },
+    {
+        url: 'https://www.travel.taipei/image/63313',
+        show: true
+    },
+    {
+        url: 'https://www.travel.taipei/image/63327',
+        show: false
+    }
+];
+
+const cards = {
+    activity: { title: '熱門活動', value: 'activity', type: 'h' },
+    spot: { title: '熱門景點', value: 'spot', type: 'v' },
+    restaurant: { title: '熱門美食', value: 'restaurant', type: 'v' },
+    hotel: { title: '熱門住宿', value: 'hotel', type: 'v' }
+};
+</script>
+
 <template>
     <div class="relative w-full top-bg text-left text-white font-medium flex items-center">
         <section>
             <h2 class="text-lg pb-2">目的地</h2>
             <h1 class="text-4xl flex">
-                <img src="../assets/w-location.png" alt="" class="mr-3" />台北
+                <img src="../assets/w-location.png" alt="" class="mr-3" />{{ detail.text }}
             </h1>
         </section>
     </div>
     <NavTab />
     <div class="container">
         <div class="result-bar text-gray-800 text-xl text-left flex">
-            {{ spot.Name }}
+            {{ data.Name }}
             <img src="../assets/location.png" alt="" class="ml-4 h-5 pt-1" />
-            <div v-if="spot.Address" class="text-sm text-gray-300 pt-1 pl-1">
-                {{ spot.Address }}
+            <div v-if="data.Address" class="text-sm text-gray-300 pt-1 pl-1">
+                {{ data.Address }}
             </div>
         </div>
     </div>
@@ -37,62 +71,36 @@
         </div>
     </div>
     <div class="container pt-20">
-        <div class="grid grid-cols-4 gap-2 text-left">
+        <div class="grid grid-cols-4 gap-2 text-left pb-20">
             <section class="detail-block col-start-1 col-end-3 px-4 py-8">
                 <h3 class="text-gray-800 text-lg font-medium">景點介紹</h3>
-                <article class="text-sm pt-10">{{ spot.DescriptionDetail }}</article>
+                <article class="text-sm pt-10">
+                    {{ data.DescriptionDetail || data.Description }}
+                </article>
             </section>
             <section class="info-block col-start-4 px-4 py-8 font-xs text-gray-200">
                 <div class="flex pb-4">
-                    <img src="../assets/location.png" alt="" class="mr-3" />
-                    {{ spot.City }}
+                    <div><img src="../assets/location.png" alt="" class="mr-3" /></div>
+                    {{ data.City || data.Address }}
                 </div>
                 <div class="flex pb-4">
-                    <img src="../assets/location.png" alt="" class="mr-3" />
-                    {{ spot.Phone }}
+                    <div><img src="../assets/location.png" alt="" class="mr-3" /></div>
+                    {{ data.Phone }}
                 </div>
                 <div class="flex pb-4">
-                    <img src="../assets/location.png" alt="" class="mr-3" />
-                    {{ spot.OpenTime }}
+                    <div><img src="../assets/location.png" alt="" class="mr-3" /></div>
+                    {{ data.OpenTime || data.StartTime }}
                 </div>
                 <div class="flex pb-4">
-                    <img src="../assets/location.png" alt="" class="mr-3" />
+                    <div><img src="../assets/location.png" alt="" class="mr-3" /></div>
 
-                    {{ spot.TicketInfo }}
+                    {{ data.Organizer }}
                 </div>
             </section>
         </div>
-        <CardWrapper :cards="card" :data="dataInCity" class="py-10" />
+        <!-- <CardWrapper :cards="cards[store.state.navList[1].value]" :data="others" class="py-10" /> -->
     </div>
 </template>
-
-<script setup>
-import CardWrapper from '../components/CardWrapper.vue';
-import NavTab from '../components/NavTab.vue';
-// import { useStore } from 'vuex';
-import { data, dataInCity } from '../mock.json';
-import { computed } from 'vue';
-
-const spot = data[0];
-const card = { title: '熱門景點', value: 'spot', type: 'v' };
-// const store = useStore();
-// const spotList = computed(() => store.state.spot);
-
-const photos = [
-    {
-        url: 'https://www.travel.taipei/image/182690',
-        show: false
-    },
-    {
-        url: 'https://www.travel.taipei/image/63313',
-        show: true
-    },
-    {
-        url: 'https://www.travel.taipei/image/63327',
-        show: false
-    }
-];
-</script>
 
 <style lang="scss" scoped>
 .top-bg {
